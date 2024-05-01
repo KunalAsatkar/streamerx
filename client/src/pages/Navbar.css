@@ -1,0 +1,86 @@
+.navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* margin-bottom: 10px; */
+    padding: 20px;
+    background-color: #a3c4e3cd;
+    box-shadow: 0 2px 2px 0 rgba(255, 254, 254, 0.2), 0 2px 2px 0 rgba(255, 255, 255, 0.19);
+}
+
+.link {
+    color: white;
+}
+
+.navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.logo {
+    padding: 0 0 0 10px;
+    font-size: 2rem;
+}
+
+.navbar .head {
+    padding: 10px;
+}
+
+.navbar .profile-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+}
+
+.navbar .user-icon-button {
+    border-radius: 50%;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+.navbar .profile-image {
+    border-radius: 50%;
+    width: 70%;
+}
+
+.user-profile-card {
+    position: absolute;
+    top: 80%;
+    right: 0;
+    width: 150px;
+    background: transparent;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.profile-card {
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.profile-card p {
+    margin-bottom: 0.5rem;
+}
+
+.profile-card .link {
+    color: #2088f8;
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+    padding: 5px;
+}
+
+
+.profile-card .link:hover {
+    text-decoration: underline;
+}
