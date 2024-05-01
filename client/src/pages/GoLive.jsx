@@ -1,9 +1,7 @@
 import { useRef, useState, useEffect } from "react"
 import { io } from 'socket.io-client'
 
-const socket = io('http://localhost:5000', {
-    autoConnect: false,
-});
+
 
 const GoLive = () => {
 
@@ -19,6 +17,7 @@ const GoLive = () => {
     const userVideoRef = useRef(null);
     const [mediaStream, setMediaStream] = useState(null);
     const [mediaRcd, setMediaRcd] = useState(null);
+    const [socket, setSocket] = useState(null);
 
     useEffect(() => {
         const getMedia = async () => {
@@ -45,7 +44,17 @@ const GoLive = () => {
     const handleStart = () => {
         if (!mediaStream) return;
 
-        socket.connect();
+        const newSocket = io('http://localhost:5000', {
+            autoConnect: false,
+            query: {
+                streamKey: data.streamKey,
+                streamUrl: data.streamURL, 
+            },
+        });
+
+        setSocket(newSocket);
+
+        newSocket.connect();
 
         const mediaRecorder = new MediaRecorder(mediaStream, {
             audioBitsPerSecond: 128000,
@@ -57,7 +66,7 @@ const GoLive = () => {
 
         mediaRecorder.ondataavailable = (e) => {
             console.log('Binary Stream Available:', e.data);
-            socket.emit('binarystream', e.data);
+            newSocket.emit('binarystream', e.data);
         }
 
         mediaRecorder.start(25);
@@ -65,6 +74,7 @@ const GoLive = () => {
 
     const handleStop = () => {
         socket.disconnect();
+        setSocket(null);
         mediaRcd.stop();
         setMediaRcd(null);
     }
@@ -78,7 +88,7 @@ const GoLive = () => {
                 <label htmlFor="streamKey">StreamKey</label>
                 <input value={data.streamKey} onChange={changeHandler} name="streamKey" id="streamKey" placeholder="streamKey" />
                 <video id="user-video" ref={userVideoRef} autoPlay muted></video>
-                <button id="start-btn" onClick={handleStart} disabled={mediaRcd === null ? false : true}>Start</button>
+                <button id="start-btn" onClick={handleStart} disabled={(data.streamKey || data.streamURL) ? false : true}>Start</button>
                 <button id="end-btn" onClick={handleStop} disabled={mediaRcd === null ? true : false}>End</button>
             </div>
         </>
