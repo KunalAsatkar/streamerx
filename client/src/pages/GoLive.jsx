@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 import { io } from 'socket.io-client'
-
-
+import './golive.css';
 
 const GoLive = () => {
 
@@ -48,7 +47,7 @@ const GoLive = () => {
             autoConnect: false,
             query: {
                 streamKey: data.streamKey,
-                streamUrl: data.streamURL, 
+                streamUrl: data.streamURL,
             },
         });
 
@@ -80,18 +79,42 @@ const GoLive = () => {
     }
 
     return (
-        <>
-            <h1>Studio</h1>
-            <div>
-                <label htmlFor="streamURL">StreamURL</label>
-                <input value={data.streamURL} onChange={changeHandler} name="streamURL" id="streamURL" placeholder="streamURL" />
-                <label htmlFor="streamKey">StreamKey</label>
-                <input value={data.streamKey} onChange={changeHandler} name="streamKey" id="streamKey" placeholder="streamKey" />
-                <video id="user-video" ref={userVideoRef} autoPlay muted></video>
-                <button id="start-btn" onClick={handleStart} disabled={(data.streamKey || data.streamURL) ? false : true}>Start</button>
-                <button id="end-btn" onClick={handleStop} disabled={mediaRcd === null ? true : false}>End</button>
+        <div className="golive-container">
+
+            <div className="golive-main">
+                <h1>Studio</h1>
+                <div className="golive-utils">
+                    <div className="golive-video">
+                        <video id="user-video" ref={userVideoRef} autoPlay muted></video>
+                    </div>
+                    <div className="golive-chats">
+                        <div className="chats-top">
+                            <h5>Top Chats</h5>
+                            <hr />  
+                        </div>
+                        <div className="chats-container">
+                            
+                        </div>
+                    </div>
+                </div>
+                <div className="golive-inputs">
+                    <div className="golive-input">
+                        <label htmlFor="streamURL">StreamURL</label>
+                        <input type='password' value={data.streamURL} onChange={changeHandler} name="streamURL" id="streamURL" placeholder="streamURL" />
+                    </div>
+                    <div className="golive-input">
+                        <label htmlFor="streamKey">StreamKey</label>
+                        <input type="password" value={data.streamKey} onChange={changeHandler} name="streamKey" id="streamKey" placeholder="streamKey" />
+                    </div>
+                </div>
+                <div className="golive-btns">
+                    <button id="start-btn" onClick={handleStart} disabled={(data.streamKey || data.streamURL) ? false : true}>Start</button>
+                    <button id="end-btn" onClick={handleStop} disabled={mediaRcd === null ? true : false}>End</button>
+                </div>
             </div>
-        </>
+
+        </div>
+
     )
 }
 
