@@ -1,8 +1,10 @@
 .golive-container {
     display: flex;
     flex-direction: row;
-    justify-content: space-between; /* Distribute space between children */
-    align-items: flex-start; /* Align items at the start of the cross axis */
+    justify-content: space-between;
+    /* Distribute space between children */
+    align-items: flex-start;
+    /* Align items at the start of the cross axis */
 }
 
 .golive-main {
@@ -12,7 +14,7 @@
     margin: 10px;
 }
 
-.golive-utils{
+.golive-utils {
     display: flex;
     flex-direction: row;
 }
@@ -20,19 +22,20 @@
 .golive-video {
     object-fit: contain;
     height: 500px;
-    width: 65%; /* Occupy full width */
+    width: 65%;
+    /* Occupy full width */
 }
 
 .golive-inputs {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     width: 100%;
 }
 
 .golive-input {
     margin: 5px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 }
 
 .golive-chats {
@@ -44,6 +47,6 @@
     /* background-color: gray; */
 }
 
-.chats-top{
+.chats-top {
     padding: 5px;
 }

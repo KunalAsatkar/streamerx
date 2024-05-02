@@ -5,8 +5,10 @@ import './golive.css';
 const GoLive = () => {
 
     const [data, setData] = useState({
-        streamURL: "",
-        streamKey: "",
+        instaStreamURL: "",
+        instaStreamKey: "",
+        youtubeStreamURL: "",
+        youtubeStreamKey: "",
     });
 
     const changeHandler = (e) => {
@@ -46,8 +48,10 @@ const GoLive = () => {
         const newSocket = io('http://localhost:5000', {
             autoConnect: false,
             query: {
-                streamKey: data.streamKey,
-                streamUrl: data.streamURL,
+                instaStreamURL: data.instaStreamURL,
+                instaStreamKey: data.instaStreamKey,
+                youtubeStreamURL: data.youtubeStreamURL,
+                youtubeStreamKey: data.youtubeStreamKey,
             },
         });
 
@@ -90,25 +94,30 @@ const GoLive = () => {
                     <div className="golive-chats">
                         <div className="chats-top">
                             <h5>Top Chats</h5>
-                            <hr />  
+                            <hr />
                         </div>
                         <div className="chats-container">
-                            
+
                         </div>
                     </div>
                 </div>
+
                 <div className="golive-inputs">
                     <div className="golive-input">
-                        <label htmlFor="streamURL">StreamURL</label>
-                        <input type='password' value={data.streamURL} onChange={changeHandler} name="streamURL" id="streamURL" placeholder="streamURL" />
+                        <label htmlFor="instaStreamURL">Insta StreamURL</label>
+                        <input type='password' value={data.instaStreamURL} onChange={changeHandler} name="instaStreamURL" id="instaStreamURL" placeholder="instaStreamURL" />
+                        <label htmlFor="instaStreamKey">Insta StreamKey</label>
+                        <input type="password" value={data.instaStreamKey} onChange={changeHandler} name="instaStreamKey" id="instaStreamKey" placeholder="instaStreamKey" />
                     </div>
                     <div className="golive-input">
-                        <label htmlFor="streamKey">StreamKey</label>
-                        <input type="password" value={data.streamKey} onChange={changeHandler} name="streamKey" id="streamKey" placeholder="streamKey" />
+                        <label htmlFor="youtubeStreamURL">Youtube StreamURL</label>
+                        <input type='password' value={data.youtubeStreamURL} onChange={changeHandler} name="youtubeStreamURL" id="youtubeStreamURL" placeholder="youtubeStreamURL" />
+                        <label htmlFor="youtubeStreamKey">Youtube StreamKey</label>
+                        <input type="password" value={data.youtubeStreamKey} onChange={changeHandler} name="youtubeStreamKey" id="youtubeStreamKey" placeholder="youtubeStreamKey" />
                     </div>
                 </div>
                 <div className="golive-btns">
-                    <button id="start-btn" onClick={handleStart} disabled={(data.streamKey || data.streamURL) ? false : true}>Start</button>
+                    <button id="start-btn" onClick={handleStart} disabled={((data.instaStreamKey && data.instaStreamURL) || (data.youtubeStreamKey && data.youtubeStreamURL)) ? false : true}>Start</button>
                     <button id="end-btn" onClick={handleStop} disabled={mediaRcd === null ? true : false}>End</button>
                 </div>
             </div>
