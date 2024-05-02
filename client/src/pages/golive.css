@@ -1,0 +1,49 @@
+.golive-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* Distribute space between children */
+    align-items: flex-start; /* Align items at the start of the cross axis */
+}
+
+.golive-main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
+}
+
+.golive-utils{
+    display: flex;
+    flex-direction: row;
+}
+
+.golive-video {
+    object-fit: contain;
+    height: 500px;
+    width: 65%; /* Occupy full width */
+}
+
+.golive-inputs {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.golive-input {
+    margin: 5px;
+    display: flex;
+    flex-direction: column;
+}
+
+.golive-chats {
+    border: 1px solid black;
+    border-radius: 1rem;
+    width: 35%;
+    margin-left: 10px;
+    height: 500px;
+    /* background-color: gray; */
+}
+
+.chats-top{
+    padding: 5px;
+}
