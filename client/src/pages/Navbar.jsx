@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import profileImage from '../assets/profile.png';
 import { Link, Outlet } from 'react-router-dom'
 import axios from 'axios';
-import {GiHamburgerMenu} from 'react-icons/gi'
+import { GiHamburgerMenu } from 'react-icons/gi'
 
 
 const Navbar = () => {
@@ -69,7 +69,7 @@ const Navbar = () => {
                         <Link className="head link" to="/about">Contact</Link>
                     </div>
                     {!loggedIn && (<div>
-                        <Link className="head link" to="/auth">Login/Register</Link>
+                        <Link className="head link" to="/">Login/Register</Link>
                     </div>)}
                     {loggedIn && (<div className="profile-container">
                         <button className="user-icon-button" onClick={handleClick} >
@@ -79,9 +79,9 @@ const Navbar = () => {
                             onLogout={checkLoggedIn} />)}
                     </div>)}
                     <div className='hamburger-menu'>
-                            <a href='#'>
-                                <GiHamburgerMenu/>
-                            </a>
+                        <a href='#'>
+                            <GiHamburgerMenu />
+                        </a>
                     </div>
                 </div>
 

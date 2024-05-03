@@ -1,9 +1,8 @@
-import Link from 'react-router-dom';
 const Footer = () => {
     return (
         <div className="footer-container">
             <div className="brand">
-                <h1>Social</h1>
+                <h1>StreamerX</h1>
                 <p>Lorem ipsum dolor sit amet Lorem, ipsum dolor laudantium illo!</p>
             </div>
             <div className="footer-actions">
@@ -19,7 +18,7 @@ const Footer = () => {
                     <h1>Solutions</h1>
                     <ul>
                         <li>integrate existing platoform</li>
-                        <li>Volunteer Engagement</li>
+                        <li>stream</li>
                         <li>Build Community</li>
                     </ul>
                 </div>
