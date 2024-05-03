@@ -11,12 +11,14 @@
 
 .link {
     color: white;
+    text-decoration: none;
 }
 
 .navigation {
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 1.12rem;
 }
 
 .logo {
