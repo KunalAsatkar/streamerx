@@ -5,7 +5,7 @@ import profileImage from '../assets/profile.png';
 import { Link, Outlet } from 'react-router-dom'
 import axios from 'axios';
 
-import { GiHamburgerMenu } from 'react-icons/gi'
+// import { GiHamburgerMenu } from 'react-icons/gi'
 
 
 
@@ -84,11 +84,11 @@ const Navbar = () => {
                             onLogout={checkLoggedIn} />)}
                     </div>)}
 
-                    <div className='hamburger-menu'>
+                    {/* <div className='hamburger-menu'>
                         <a href='#'>
                             <GiHamburgerMenu />
                         </a>
-                    </div>
+                    </div> */}
 
                 </div>
 

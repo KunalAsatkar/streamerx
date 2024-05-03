@@ -21,7 +21,7 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        path: '/wellcome',
+        path: '/wellcome/:flag',
         element: <Home />
       },
       {
@@ -42,6 +42,7 @@ function App() {
     <div className="App">
       <RouterProvider router={router} />
       <Footer />
+    </div>
   );
 }
 
