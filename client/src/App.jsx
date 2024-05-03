@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Navbar from './pages/Navbar';
 import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
+// import Contact from './pages/Contact';
 // import EventDetails from './EventDetails';
 // import CreateEvent from './CreateEvent';
 // import Wellcome from './pages/Wellcome';
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       //   path: '/calendar/google/callback',
       //   element: <CalendarCallback />
       // },
+      // {
+      //   path: "/contact",
+      //   element : <Contact />
+      // }
     ]
   }
 
@@ -59,8 +64,7 @@ function App() {
     <div className="App">
       <RouterProvider router={router} />
       {/* <Footer /> */}
-
-    </div >
+    </div>
   );
 }
 
