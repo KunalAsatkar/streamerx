@@ -5,6 +5,12 @@ body {
 }
 
 
+*{
+    font-family: "Vollkorn", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
 
 .auth {
     text-align: center;
@@ -161,4 +167,15 @@ button {
 .help,
 .resources {
     padding: 10px;
+}
+
+.video-upload-section{
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+    padding-left: 1vh;
+}
+.video-upload-section label{
+    padding: 2.5vh 1vh 0 1vh;
+    /* padding-left: 1vh; */
 }
