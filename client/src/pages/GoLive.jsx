@@ -89,7 +89,7 @@ const GoLive = () => {
                 <h1>Studio</h1>
                 <div className="golive-utils">
                     <div className="golive-video">
-                        <video id="user-video" ref={userVideoRef} autoPlay muted></video>
+                        <video id="user-video" ref={userVideoRef} autoPlay muted controls></video>
                     </div>
                     <div className="golive-chats">
                         <div className="chats-top">

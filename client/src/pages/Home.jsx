@@ -17,8 +17,7 @@ const Home = () => {
                         <button className="join-button" onClick={handleClick} role="button">Studio</button>
                     </div>
                     <div className="message">
-                        <p >Join our vibrant community of streames and organizations,
-                            where every stream is a chance to create positive change and leave a lasting impact. </p>
+                        <p >Join our vibrant community of streamers and organizations </p>
                     </div>
                 </div>
             </div>
