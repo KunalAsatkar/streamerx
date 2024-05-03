@@ -104,16 +104,24 @@ const GoLive = () => {
 
                 <div className="golive-inputs">
                     <div className="golive-input">
-                        <label htmlFor="instaStreamURL">Insta StreamURL</label>
-                        <input type='password' value={data.instaStreamURL} onChange={changeHandler} name="instaStreamURL" id="instaStreamURL" placeholder="instaStreamURL" />
-                        <label htmlFor="instaStreamKey">Insta StreamKey</label>
-                        <input type="password" value={data.instaStreamKey} onChange={changeHandler} name="instaStreamKey" id="instaStreamKey" placeholder="instaStreamKey" />
+                        <section className="golive-input-section">
+                            <label htmlFor="instaStreamURL">Insta StreamURL</label>
+                            <input type='password' value={data.instaStreamURL} onChange={changeHandler} name="instaStreamURL" id="instaStreamURL" placeholder="instaStreamURL" />
+                        </section>
+                        <section className="golive-input-section">
+                            <label htmlFor="instaStreamKey">Insta StreamKey</label>
+                            <input type="password" value={data.instaStreamKey} onChange={changeHandler} name="instaStreamKey" id="instaStreamKey" placeholder="instaStreamKey" />
+                        </section>
                     </div>
                     <div className="golive-input">
-                        <label htmlFor="youtubeStreamURL">Youtube StreamURL</label>
-                        <input type='password' value={data.youtubeStreamURL} onChange={changeHandler} name="youtubeStreamURL" id="youtubeStreamURL" placeholder="youtubeStreamURL" />
-                        <label htmlFor="youtubeStreamKey">Youtube StreamKey</label>
-                        <input type="password" value={data.youtubeStreamKey} onChange={changeHandler} name="youtubeStreamKey" id="youtubeStreamKey" placeholder="youtubeStreamKey" />
+                        <section className="golive-input-section">
+                            <label htmlFor="youtubeStreamURL">Youtube StreamURL</label>
+                            <input type='password' value={data.youtubeStreamURL} onChange={changeHandler} name="youtubeStreamURL" id="youtubeStreamURL" placeholder="youtubeStreamURL" />
+                        </section>
+                        <section className="golive-input-section">
+                            <label htmlFor="youtubeStreamKey">Youtube StreamKey</label>
+                            <input type="password" value={data.youtubeStreamKey} onChange={changeHandler} name="youtubeStreamKey" id="youtubeStreamKey" placeholder="youtubeStreamKey" />
+                        </section>
                     </div>
                 </div>
                 <div className="golive-btns">
