@@ -1,8 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
 body {
     margin: 0;
     background-image: linear-gradient(79deg, #fcfced, #fcedfc 48%, #ebf6ff);
 }
 
+
+*{
+    font-family: "Vollkorn", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
 
 
 .auth {
@@ -11,6 +18,9 @@ body {
     min-height: 100vh;
     align-items: center;
     justify-content: center;
+    font-family: "Vollkorn", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 }
 
 
@@ -36,7 +46,7 @@ label {
 
 input {
     margin: 0.5rem 0;
-    border: 1px solid #faa6fa;
+    border: 1px solid #c87bc8;
     border-radius: 3%;
     padding: 1rem;
     background-color: transparent;
@@ -157,4 +167,15 @@ button {
 .help,
 .resources {
     padding: 10px;
+}
+
+.video-upload-section{
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+    padding-left: 1vh;
+}
+.video-upload-section label{
+    padding: 2.5vh 1vh 0 1vh;
+    /* padding-left: 1vh; */
 }

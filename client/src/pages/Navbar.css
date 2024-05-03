@@ -20,8 +20,12 @@
     align-items: center;
     font-size: 1.12rem;
 }
+.navigation .hamburger-menu{
+    display: none;
+}
 
 .logo {
+    /* background-color: #3b5998;  */
     padding: 0 0 0 10px;
     font-size: 2rem;
 }

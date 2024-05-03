@@ -65,7 +65,7 @@ const Login = () => {
                         <input value={data.password} onChange={changeHandler} type="password" name="password" id="password" placeholder="******" />
                         <button onClick={loginHandler} type="submit">Log In</button>
                     </form>
-                    <p>Don't have account <span onClick={() => { setShowLogin(false); }}>Register Here</span> </p>
+                    <p>Don't have account <span onClick={() => { setShowLogin(false); }}>Signup</span> </p>
                     {errorMessage &&
                         (<p className="error-message">The entered credentials are incorrect</p>)
                     }
