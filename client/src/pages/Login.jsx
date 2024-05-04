@@ -26,7 +26,8 @@ const Login = () => {
                 // console.log(response.data.data);
                 localStorage.setItem('username', response.data.data.username);
                 localStorage.setItem('jwt_token', response.data.token);
-                navigate('/wellcome');
+                // navigate    ('/wellcome');
+                window.location.href = '/wellcome';
             })
             .catch(function (err) {
                 setErrorMessage(true);

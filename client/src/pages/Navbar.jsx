@@ -65,10 +65,10 @@ const Navbar = () => {
                 </div>
                 <div className="navigation">
                     <div>
-                        <Link className="head link" to="/golive">GoLive</Link>
+                        <Link className="head link" to={loggedIn ? `/golive` : `/`}>GoLive</Link>
                     </div>
                     <div>
-                        <Link className="head link" to="/videouploads">Videouploads</Link>
+                        <Link className="head link" to={loggedIn ? `/videouploads` : `/`}>Videouploads</Link>
                     </div>
                     {/* <div>
                         <Link className="head link" to="/contact">Contact</Link>
