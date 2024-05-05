@@ -1,8 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
+
 body {
     margin: 0;
     background-image: linear-gradient(79deg, #fcfced, #fcedfc 48%, #ebf6ff);
 }
 
+
+* {
+    font-family: "Vollkorn", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
 
 
 .auth {
@@ -11,6 +19,9 @@ body {
     min-height: 100vh;
     align-items: center;
     justify-content: center;
+    font-family: "Vollkorn", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 }
 
 
@@ -24,6 +35,7 @@ body {
 .auth-container {
     padding: 1.5rem 3rem;
     border: 1px solid #faa6fa;
+    border-radius: 1.3%;
     background-color: transparent;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
@@ -35,7 +47,8 @@ label {
 
 input {
     margin: 0.5rem 0;
-    border: 1px solid #faa6fa;
+    border: 1px solid #c87bc8;
+    border-radius: 3%;
     padding: 1rem;
     background-color: transparent;
 }
@@ -137,13 +150,16 @@ button {
 .footer-container {
     display: flex;
     flex-direction: row;
+    margin-top: 30px;
     padding: 3%;
+    color: rgb(72, 58, 58);
     background: transparent;
     border: solid 1px red;
     box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     justify-content: space-between;
+    /* background-color: rgb(173, 171, 171); */
 }
 
 .footer-actions {
@@ -155,4 +171,16 @@ button {
 .help,
 .resources {
     padding: 10px;
+}
+
+.video-upload-section {
+    display: flex;
+    justify-content: left;
+    flex-direction: row;
+    padding-left: 1vh;
+}
+
+.video-upload-section label {
+    padding: 2.5vh 1vh 0 1vh;
+    /* padding-left: 1vh; */
 }

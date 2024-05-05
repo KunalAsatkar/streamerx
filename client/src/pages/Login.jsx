@@ -26,7 +26,8 @@ const Login = () => {
                 // console.log(response.data.data);
                 localStorage.setItem('username', response.data.data.username);
                 localStorage.setItem('jwt_token', response.data.token);
-                navigate('/wellcome');
+                // navigate    ('/wellcome');
+                window.location.href = '/wellcome';
             })
             .catch(function (err) {
                 setErrorMessage(true);
@@ -59,13 +60,13 @@ const Login = () => {
                 <div className="auth-container">
                     <h2>Login</h2>
                     <form className="login">
-                        <label htmlFor="email">email</label>
-                        <input value={data.email} onChange={changeHandler} type="email" name="email" id="email" placeholder="email" />
-                        <label htmlFor="password">password</label>
+                        <label htmlFor="email">Email</label>
+                        <input value={data.email} onChange={changeHandler} type="email" name="email" id="email" placeholder="Email" />
+                        <label htmlFor="password">Password</label>
                         <input value={data.password} onChange={changeHandler} type="password" name="password" id="password" placeholder="******" />
                         <button onClick={loginHandler} type="submit">Log In</button>
                     </form>
-                    <p>Don't have account <span onClick={() => { setShowLogin(false); }}>RegisterHere</span> </p>
+                    <p>Don't have account <span onClick={() => { setShowLogin(false); }}>Signup</span> </p>
                     {errorMessage &&
                         (<p className="error-message">The entered credentials are incorrect</p>)
                     }
@@ -75,21 +76,21 @@ const Login = () => {
                 <div className="auth-container">
                     <h2>Register</h2>
                     <form className="register">
-                        <label htmlFor="username">username</label>
-                        <input value={data.username} onChange={changeHandler} type="username" name="username" id="username" placeholder="username" />
+                        <label htmlFor="username">Username</label>
+                        <input value={data.username} onChange={changeHandler} type="username" name="username" id="username" placeholder="Username" />
                         <label htmlFor="fname">First Name</label>
-                        <input value={data.fname} onChange={changeHandler} type="fname" name="fname" id="fname" placeholder="first name" />
+                        <input value={data.fname} onChange={changeHandler} type="fname" name="fname" id="fname" placeholder="First name" />
                         <label htmlFor="lname">Last Name</label>
-                        <input value={data.lname} onChange={changeHandler} type="lname" name="lname" id="lname" placeholder="last name" />
-                        <label htmlFor="email">email</label>
-                        <input value={data.email} onChange={changeHandler} type="email" name="email" id="email" placeholder="email" />
-                        <label htmlFor="contactno">contact Number</label>
-                        <input value={data.contactno} onChange={changeHandler} type="contactno" name="contactno" id="contactno" placeholder="first name" />
-                        <label htmlFor="password">password</label>
+                        <input value={data.lname} onChange={changeHandler} type="lname" name="lname" id="lname" placeholder="Last name" />
+                        <label htmlFor="email">Email</label>
+                        <input value={data.email} onChange={changeHandler} type="email" name="email" id="email" placeholder="Email" />
+                        <label htmlFor="contactno">Contact Number</label>
+                        <input value={data.contactno} onChange={changeHandler} type="contactno" name="contactno" id="contactno" placeholder="Contact no." />
+                        <label htmlFor="password">Password</label>
                         <input value={data.password} onChange={changeHandler} type="password" name="password" id="password" placeholder="******" />
                         <button onClick={registerHandler} type="submit">Register</button>
                     </form>
-                    <p>Already have an account? <span onClick={() => { setShowLogin(true); }}>LoginHere</span> </p>
+                    <p>Already have an account? <span onClick={() => { setShowLogin(true); }}>Login Here</span> </p>
                     {errorMessage &&
                         (<p className="error-message">All the details is required</p>)
                     }

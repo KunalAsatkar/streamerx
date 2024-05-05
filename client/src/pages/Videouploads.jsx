@@ -23,15 +23,19 @@ const Videouploads = () => {
     }
 
     return (
-        <div>
-            <input
-                type="file"
-                accept="video/*"
-                onChange={(e) => setVideo(e.target.files[0])}
-            />
-            <label htmlFor="title">title</label>
-            <input value={data.title} onChange={changeHandler} name="title" placeholder="title" />
-            <button onClick={handleVideoUpload}>Upload Video</button>
+        <div className='video-upload'>
+            <section className='video-upload-section'>
+                <input
+                    type="file"
+                    accept="video/*"
+                    onChange={(e) => setVideo(e.target.files[0])}
+                />
+                <label htmlFor="title">Title</label>
+                <input value={data.title} onChange={changeHandler} name="title" placeholder="Title" />
+            </section>
+            <section className='video-upload-section'>   
+                <button onClick={handleVideoUpload}>Upload Video</button>
+            </section>
             <GetVidoes className='events' />
         </div>
     );

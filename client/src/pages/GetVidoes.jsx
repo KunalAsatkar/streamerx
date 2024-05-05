@@ -5,7 +5,7 @@ const GetVidoes = () => {
     console.log("getvideos");
     const [videos, setVideos] = useState([]);
     const getVideos = async () => {
-        const result = await axios.get('http://localhost:5000/awareness')
+        const result = await axios.get('http://localhost:8000/awareness')
             .then((response) => {
                 console.log(response);
                 return response.data.body;

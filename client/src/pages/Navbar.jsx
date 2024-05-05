@@ -5,6 +5,9 @@ import profileImage from '../assets/profile.png';
 import { Link, Outlet } from 'react-router-dom'
 import axios from 'axios';
 
+// import { GiHamburgerMenu } from 'react-icons/gi'
+
+
 
 const Navbar = () => {
     const [showProfile, setShowProfile] = useState(false);
@@ -62,13 +65,16 @@ const Navbar = () => {
                 </div>
                 <div className="navigation">
                     <div>
-                        <Link className="head link" to="/videouploads">Videouploads</Link>
+                        <Link className="head link" to={loggedIn ? `/golive` : `/`}>GoLive</Link>
                     </div>
                     <div>
-                        <Link className="head link" to="/about">Contact</Link>
+                        <Link className="head link" to={loggedIn ? `/videouploads` : `/`}>Videouploads</Link>
                     </div>
+                    {/* <div>
+                        <Link className="head link" to="/contact">Contact</Link>
+                    </div> */}
                     {!loggedIn && (<div>
-                        <Link className="head link" to="/auth">login/register</Link>
+                        <Link className="head link" to="/">Login/Register</Link>
                     </div>)}
                     {loggedIn && (<div className="profile-container">
                         <button className="user-icon-button" onClick={handleClick} >
@@ -77,9 +83,16 @@ const Navbar = () => {
                         {showProfile && (<Profile
                             onLogout={checkLoggedIn} />)}
                     </div>)}
+
+                    {/* <div className='hamburger-menu'>
+                        <a href='#'>
+                            <GiHamburgerMenu />
+                        </a>
+                    </div> */}
+
                 </div>
 
-            </section >
+            </section>
             <div><Outlet /></div>
         </div>
     );
