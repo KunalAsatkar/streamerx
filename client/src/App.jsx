@@ -9,6 +9,8 @@ import Home from './pages/Home';
 // import Wellcome from './pages/Wellcome';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Videouploads from './pages/Videouploads';
+import { Platforms } from './pages/Platforms';
+import { useState } from 'react';
 // import Dashboard from './Dashboard';
 // import CalendarCallback from './CalendarCalback';
 // import Footer from './pages/Footer';
@@ -49,12 +51,20 @@ const router = createBrowserRouter([
       //   path: '/calendar/google/callback',
       //   element: <CalendarCallback />
       // },
+      {
+        path: '/platform',
+        element: <Platforms />
+      }
     ]
   }
 
 ])
 
 function App() {
+  // const localstorage = window.localStorage();
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
+
+
   return (
     <div className="App">
       <RouterProvider router={router} />
