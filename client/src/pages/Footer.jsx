@@ -2,7 +2,7 @@ const Footer = () => {
     return (
         <div className="footer-container">
             <div className="brand">
-                <h1>StreamerX</h1>
+                <h1>StreamX</h1>
                 <p>Discover Meaningful Creativity to Make a Difference.</p>
             </div>
             <div className="footer-actions">
