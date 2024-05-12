@@ -43,9 +43,10 @@ passport.deserializeUser((user, done) => {
 
 const authRoutes = require('./Routes/authRoutes');
 // const awarenessRoutes = require('./Routes/awarenessRoutes');
-
 app.use('/auth', authRoutes);
 // app.use('/awareness', awarenessRoutes);
+const notifyRoutes = require('./Routes/notifyRoutes.js');
+app.use('/notify', notifyRoutes);
 
 
 app.get('/', (req, res) => {
