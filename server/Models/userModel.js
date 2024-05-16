@@ -55,6 +55,9 @@ const userSchema = mongoose.Schema({
     forgotPasswordExpiryDate: {
         type: Date
     },
+    googleId: { type: String, default: undefined },
+    googleAccessToken: { type: String, default: undefined },
+    googleRefreshToken: { type: String, default: undefined },
 }, {
     timestamps: true
 }
@@ -81,7 +84,7 @@ userSchema.methods = {
 
 const userModel = mongoose.model('user', userSchema);
 
-module.exports = { userModel };
+module.exports =  userModel ;
 
 
 

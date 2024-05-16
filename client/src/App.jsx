@@ -6,6 +6,8 @@ import ErrorPage from './pages/ErrorPage';
 import Home from './pages/Home';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Videouploads from './pages/Videouploads';
+import { Platforms } from './pages/Platforms';
+import { useState } from 'react';
 import Footer from './pages/Footer';
 
 const router = createBrowserRouter([
@@ -32,12 +34,20 @@ const router = createBrowserRouter([
         path: "/videouploads",
         element: <Videouploads />
       },
+      {
+        path: '/platform',
+        element: <Platforms />
+      }
     ]
   }
 
 ])
 
 function App() {
+  // const localstorage = window.localStorage();
+  const [userId, setUserId] = useState(localStorage.getItem('userId'));
+
+
   return (
     <div className="App">
       <RouterProvider router={router} />
