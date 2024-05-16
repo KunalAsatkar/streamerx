@@ -61,7 +61,7 @@ const Navbar = () => {
             <section className="navbar">
 
                 <div className="logo">
-                    <Link to={loggedIn ? `/wellcome` : `/`} className='link'>StreamerX</Link>
+                    <Link to={loggedIn ? `/wellcome` : `/`} className='link'>StreamX</Link>
                 </div>
                 <div className="navigation">
                     <div>
