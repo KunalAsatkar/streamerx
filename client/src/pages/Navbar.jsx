@@ -22,7 +22,7 @@ const Navbar = () => {
         const result = await axios.get('http://localhost:8000/auth/user', {
             headers:
             {
-                "Content-Type": "appliation/json",
+                "Content-Type": "application/json",
                 "Authorization": token
             }
         })

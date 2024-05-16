@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './platform.css';
 import axios from 'axios';
 
@@ -6,22 +6,40 @@ export const Platforms = () => {
 
     const [isConnectedYt, setIsConnectedYt] = useState(false);
     const [isConnectedInsta, setIsConnectedInsta] = useState(false);
-    // const [user, setUser] = useState(null);
+    const [userId, setUserId] = useState(window.localStorage.getItem('userId'));
 
-    const connectWithYT = () => {
-        const url = new URL('http://localhost:3000/auth/google/callback');
+    const connectWithYT = async () => {
+        const url = new URL('http://localhost:8000/auth/google');
         url.searchParams.append('scope', 'https://www.googleapis.com/auth/youtube.readonly');
-        url.searchParams.append('scope', 'profile');
-        // window.open('http://localhost:3000/auth/google/callback', '_self');
+        url.searchParams.append('scope', 'https://www.googleapis.com/auth/youtube');
+        url.searchParams.append('scope', 'https://www.googleapis.com/auth/youtube.force-ssl');
+        window.open('http://localhost:8000/auth/google/callback', '_self');
         window.location.href = url.toString();
+        console.log(userId);
+        
         isConnectedYt(true);
     }
 
-    // useEffect(() => {
-    //   const user = axios.get('/api/user', userId);
-    //   if(user.connectedYt) setIsConnectedYt(true);
-    //   if(user.connectedInsta) setIsConnectedInsta(true);
-    // }, [])
+    useEffect(() => {
+        async function getUser() {
+            try {
+                const user = await axios.get('http://localhost:8000/auth/user', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': window.localStorage.getItem('jwt_token')
+                    }
+                });
+                console.log("User", user.data.data);
+                if(user.data.data.googleRefreshToken) setIsConnectedYt(true);
+                // if(user.data.data.connectedInsta) setIsConnectedInsta(true);
+                
+            } catch (error) {
+                console.log(error, "Error in getting user");
+            }
+        }
+
+        getUser();
+    }, [])
     
 
   return (

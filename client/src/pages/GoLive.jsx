@@ -20,9 +20,14 @@ const GoLive = () => {
     const [mediaStream, setMediaStream] = useState(null);
     const [mediaRcd, setMediaRcd] = useState(null);
     const [socket, setSocket] = useState(null);
-    const [yt_token, setYt_Token] = useState(null);
-    const [channelId, setChannelId] = useState('');
+    const [ytAccessToken, setYtAccessToken] = useState(null);
     const [liveChatId, setLiveChatId] = useState('');
+    const [notifyEmail, setNotifyEmail] = useState([]);
+    const [intervVl, setInterVl] = useState();
+    const [nextPageToken, setNextPageToken] = useState('');
+    const [liveChats, setLiveChats] = useState([]);
+
+    const chatContianerRef = useRef(null);
 
     useEffect(() => {
         const getMedia = async () => {
@@ -33,76 +38,16 @@ const GoLive = () => {
             } catch (error) {
                 console.log('Error accessing media', error);
             }
-
-
         }
 
-        const getUser = async () => {
-            try {
-                const user = await axios.get('http://localhost:3000/api/user', 'panbuderutuj6@gcoea.ac.in');
-                setYt_Token(user.googleAccessToken);
-            } catch (error) {
-                console.log(error);
-            }
+        const getYtAccessToken = async () => {
+            const resp = await axios.get('http://localhost:8000/getaccesstoken', { params: { userId: window.localStorage.getItem('userId') } });
+            setYtAccessToken(resp.data.accessToken);
+            console.log(resp.data);
         }
-
-        // const getLiveChatId = async (accessToken, channelId) => {
-
-        // }
-
-        const getChannelId = async (accessToken) => {
-            try {
-                const response = await axios.get('https://www.googleapis.com/youtube/v3/channels', {
-                    params: {
-                        part: 'snippet',
-                        mine: true, // Set to true if fetching the channel ID for the authenticated user
-                        access_token: accessToken
-                    }
-                });
-
-                // Assuming the response contains the authenticated user's channel ID
-                const channel = response.data.items[0];
-                if (channel) {
-                    console.log(channel.id);
-                    setChannelId(channel.id);
-                } else {
-                    console.error('No channel found for the authenticated user');
-                    return null;
-                }
-            } catch (error) {
-                console.error('Error fetching channel ID:', error);
-            }
-        };
-
-        const getLiveChatId = async (accessToken, channelId) => {
-            try {
-                const response = await axios.get('https://www.googleapis.com/youtube/v3/liveBroadcasts', {
-                    params: {
-                        part: 'snippet',
-                        broadcastType: 'all',
-                        broadcastStatus: 'active',
-                        mine: true, // Set to true if the user's channel
-                        access_token: accessToken
-                    }
-                });
-
-                // Assuming the first active live broadcast contains the live chat ID
-                const liveBroadcast = response.data.items[0];
-                if (liveBroadcast) {
-                    setLiveChatId(liveBroadcast.snippet.liveChatId);
-                } else {
-                    console.error('No active live broadcast found');
-                }
-            } catch (error) {
-                console.error('Error fetching live chat ID:', error);
-                return null;
-            }
-        };
 
         getMedia();
-        getUser();
-        getChannelId(yt_token);
-        getLiveChatId(yt_token, channelId)
+        getYtAccessToken();
 
         return () => {
             if (mediaStream) {
@@ -146,6 +91,44 @@ const GoLive = () => {
         mediaRecorder.start(25);
     }
 
+    // implementing this...
+    let nextPageTokenForChat; // jugad since nextPageToken useState var is not updating
+    const getLiveChats = async () => {
+        // get livechatid
+        const resp = await axios.get('http://localhost:8000/livechatid', { params: { accessToken: ytAccessToken } });
+        const LiveChatId = resp.data.liveChatId;
+
+        setLiveChatId(LiveChatId);
+
+        const interval = setInterval(async () => {
+            setInterVl(interval);
+            try {
+                console.log('nextPageTOken: ', nextPageToken)
+                // const liveChat = await  axios.get('http://localhost:8000/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageToken, accessToken: ytAccessToken } });
+                const liveChat = await  axios.get('http://localhost:8000/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageTokenForChat, accessToken: ytAccessToken } });
+                console.log('msg items array: ', liveChat.data.data.items);
+                const msges = liveChat.data.data.items;
+                const modifiedMsg = msges.map(msg => {
+                    return { ...msg, platform: 'youtube' };
+                })
+    
+                setLiveChats((prevLiveChats) => [ ...prevLiveChats, ...modifiedMsg]);
+                setNextPageToken(liveChat.data.data.nextPageToken)
+                nextPageTokenForChat = liveChat.data.data.nextPageToken;
+                // console.log('nextpagetoken: ', liveChat.data.data.nextPageToken);
+            } catch (error) {
+                console.log('error in livechats', error);
+            }
+        }, 3000);
+    }
+    
+    const handleStopChat = () => {
+        clearInterval(intervVl);
+        setInterVl(null);
+        setLiveChatId('');
+        setNextPageToken('');
+    }
+
     const handleStop = () => {
         socket.disconnect();
         setSocket(null);
@@ -153,56 +136,138 @@ const GoLive = () => {
         setMediaRcd(null);
     }
 
+    const handleAddEmail = () => {
+        setNotifyEmail([...notifyEmail, '']); // Add an empty EnvVar object
+        console.log(notifyEmail)
+    };
+
+    const handleEmailChange = (index, e) => {
+        const updatedEmail = [...notifyEmail];
+        updatedEmail[index] = [...updatedEmail[index]]; // Clone old string
+        if (e.target.name === 'email') updatedEmail[index] = e.target.value.trim();
+        setNotifyEmail(updatedEmail);
+    };
+
+    const handleSubmitEmails = () => {
+        try {
+            const resp = axios.post("http://localhost:8000/notify", { emails: notifyEmail, msg: 'hey hii', subject: 'hello' });
+            console.log(resp);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return (
-        <div className="golive-container">
+        <>
+            <div className="golive-container">
 
-            <div className="golive-main">
-                <h1>Studio</h1>
-                <div className="golive-utils">
-                    <div className="golive-video">
-                        <video id="user-video" ref={userVideoRef} autoPlay muted controls></video>
-                    </div>
-                    <div className="golive-chats">
-                        <div className="chats-top">
-                            <h5>Top Chats</h5>
-                            <hr />
+                <div className="golive-main">
+                    <h1>Studio</h1>
+                    <div className="golive-utils">
+                        <div className="golive-video">
+                            <video id="user-video" ref={userVideoRef} autoPlay muted controls></video>
                         </div>
-                        <div className="chats-container">
+                        <div className="golive-chats">
+                            <div className="chats-top">
+                                <h5>Top Chats</h5>
+                                <hr />
+                                <div className="chats">
+                                    {
+                                        liveChats.length > 0 && (
+                                            <div className="chatContainer" style={{ overflowY: 'auto'}}>
+                                                <pre className="preFormat">
+                                                    {
+                                                        liveChats.map((chat, i) => (
+                                                            <p
+                                                                ref={liveChats.length - 1 === i ? chatContianerRef : undefined}
+                                                                key={i}
+                                                            >
+                                                                <span>{chat.platform} </span>
+                                                                <span>{chat.platform === 'youtube' ? chat.authorDetails.displayName : ''} </span>
+                                                                <span>{chat.platform === 'youtube' ? chat.snippet.textMessageDetails.messageText : ''}</span>
+                                                            </p>
+                                                        ))
+                                                    }
+                                                </pre>
+                                            </div>
+                                        )
+                                    }
+                                    <div className="msg"></div>
+                                </div>
+                            </div>
+                            <div className="chats-container">
 
+                            </div>
                         </div>
                     </div>
+
+                    <div className="golive-inputs">
+                        <div className="golive-input">
+                            <section className="golive-input-section">
+                                <label htmlFor="instaStreamURL">Insta StreamURL</label>
+                                <input type='password' value={data.instaStreamURL} onChange={changeHandler} name="instaStreamURL" id="instaStreamURL" placeholder="instaStreamURL" />
+                            </section>
+                            <section className="golive-input-section">
+                                <label htmlFor="instaStreamKey">Insta StreamKey</label>
+                                <input type="password" value={data.instaStreamKey} onChange={changeHandler} name="instaStreamKey" id="instaStreamKey" placeholder="instaStreamKey" />
+                            </section>
+                        </div>
+                        <div className="golive-input">
+                            <section className="golive-input-section">
+                                <label htmlFor="youtubeStreamURL">Youtube StreamURL</label>
+                                <input type='password' value={data.youtubeStreamURL} onChange={changeHandler} name="youtubeStreamURL" id="youtubeStreamURL" placeholder="youtubeStreamURL" />
+                            </section>
+                            <section className="golive-input-section">
+                                <label htmlFor="youtubeStreamKey">Youtube StreamKey</label>
+                                <input type="password" value={data.youtubeStreamKey} onChange={changeHandler} name="youtubeStreamKey" id="youtubeStreamKey" placeholder="youtubeStreamKey" />
+                            </section>
+                        </div>
+                    </div>
+                    <div className="golive-btns">
+                        <button id="start-btn" onClick={handleStart} disabled={((data.instaStreamKey && data.instaStreamURL) || (data.youtubeStreamKey && data.youtubeStreamURL)) ? false : true}>Start</button>
+                        <button id="end-btn" onClick={handleStop} disabled={mediaRcd === null ? true : false}>End</button>
+                        <button id="start-btn" onClick={getLiveChats} >StartChats</button>
+                        <button id="end-btn" onClick={handleStopChat} >EndChats</button>
+                    </div>
                 </div>
 
-                <div className="golive-inputs">
-                    <div className="golive-input">
-                        <section className="golive-input-section">
-                            <label htmlFor="instaStreamURL">Insta StreamURL</label>
-                            <input type='password' value={data.instaStreamURL} onChange={changeHandler} name="instaStreamURL" id="instaStreamURL" placeholder="instaStreamURL" />
-                        </section>
-                        <section className="golive-input-section">
-                            <label htmlFor="instaStreamKey">Insta StreamKey</label>
-                            <input type="password" value={data.instaStreamKey} onChange={changeHandler} name="instaStreamKey" id="instaStreamKey" placeholder="instaStreamKey" />
-                        </section>
-                    </div>
-                    <div className="golive-input">
-                        <section className="golive-input-section">
-                            <label htmlFor="youtubeStreamURL">Youtube StreamURL</label>
-                            <input type='password' value={data.youtubeStreamURL} onChange={changeHandler} name="youtubeStreamURL" id="youtubeStreamURL" placeholder="youtubeStreamURL" />
-                        </section>
-                        <section className="golive-input-section">
-                            <label htmlFor="youtubeStreamKey">Youtube StreamKey</label>
-                            <input type="password" value={data.youtubeStreamKey} onChange={changeHandler} name="youtubeStreamKey" id="youtubeStreamKey" placeholder="youtubeStreamKey" />
-                        </section>
-                    </div>
-                </div>
-                <div className="golive-btns">
-                    <button id="start-btn" onClick={handleStart} disabled={((data.instaStreamKey && data.instaStreamURL) || (data.youtubeStreamKey && data.youtubeStreamURL)) ? false : true}>Start</button>
-                    <button id="end-btn" onClick={handleStop} disabled={mediaRcd === null ? true : false}>End</button>
-                </div>
+
+
             </div>
+            <div className="send-notification-container">
+                <h2>Add emails</h2>
+                {notifyEmail.map((varString, index) => (
+                    <div key={index} className="notify-email-input">
+                        <div className="sn1">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                className='input'
+                                type="text"
+                                name='email'
+                                placeholder={`email`}
+                                value={varString.name}
+                                onChange={(e) => handleEmailChange(index, e)}
+                            />
 
-        </div>
+                        </div>
 
+                    </div>
+                ))}
+                <button className='button button-primary' onClick={handleAddEmail}>
+                    + Add Email
+                </button>
+                <button
+                    onClick={handleSubmitEmails}
+                    disabled={!notifyEmail}
+                    className='button'
+                    type='submit'
+                >
+                    {notifyEmail ? "Notify" : "Add Emails..."}
+                </button>
+
+            </div>
+        </>
     )
 }
 

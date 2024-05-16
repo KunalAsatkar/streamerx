@@ -1,6 +1,7 @@
-import nodemailer from 'nodemailer';
+// import nodemailer from 'nodemailer';
+const nodemailer = require('nodemailer');
 
-export const sendEmail = async ({ emails, msg, subject }) => {
+const sendEmail = async ({ emails, msg, subject }) => {
     try {
         // todo: configure mail for usage
         console.log(emails, msg, subject);
@@ -32,3 +33,5 @@ export const sendEmail = async ({ emails, msg, subject }) => {
         throw new Error(error.message);
     }
 }
+
+module.exports = sendEmail;

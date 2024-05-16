@@ -1,10 +1,13 @@
 const JWT = require('jsonwebtoken');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const jwtAuth = (req, res, next) => {
     // const token = (req.cookies && req.cookies.token) || null; when token is passed in cookies
     const token = req.headers.authorization;
     // console.log(token);
-    console.log(`jwtauth`);
+    // console.log(`jwtauth`);
     if (!token) {
         return res.status(400).json({
             success: false,
