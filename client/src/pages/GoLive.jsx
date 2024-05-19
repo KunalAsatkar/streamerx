@@ -26,6 +26,8 @@ const GoLive = () => {
     const [intervVl, setInterVl] = useState();
     const [nextPageToken, setNextPageToken] = useState('');
     const [liveChats, setLiveChats] = useState([]);
+    const [subject, setSubject] = useState('');
+    const [msg, setMsg] = useState('');
 
     const chatContianerRef = useRef(null);
 
@@ -105,14 +107,14 @@ const GoLive = () => {
             try {
                 console.log('nextPageTOken: ', nextPageToken)
                 // const liveChat = await  axios.get('http://localhost:8000/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageToken, accessToken: ytAccessToken } });
-                const liveChat = await  axios.get('http://localhost:8000/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageTokenForChat, accessToken: ytAccessToken } });
+                const liveChat = await axios.get('http://localhost:8000/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageTokenForChat, accessToken: ytAccessToken } });
                 console.log('msg items array: ', liveChat.data.data.items);
                 const msges = liveChat.data.data.items;
                 const modifiedMsg = msges.map(msg => {
                     return { ...msg, platform: 'youtube' };
                 })
-    
-                setLiveChats((prevLiveChats) => [ ...prevLiveChats, ...modifiedMsg]);
+
+                setLiveChats((prevLiveChats) => [...prevLiveChats, ...modifiedMsg]);
                 setNextPageToken(liveChat.data.data.nextPageToken)
                 nextPageTokenForChat = liveChat.data.data.nextPageToken;
                 // console.log('nextpagetoken: ', liveChat.data.data.nextPageToken);
@@ -121,7 +123,7 @@ const GoLive = () => {
             }
         }, 3000);
     }
-    
+
     const handleStopChat = () => {
         clearInterval(intervVl);
         setInterVl(null);
@@ -148,11 +150,18 @@ const GoLive = () => {
         setNotifyEmail(updatedEmail);
     };
 
-    const handleSubmitEmails = () => {
+    const handleMsgSubChange = (e) => {
+        if(e.target.name === 'subject') setSubject(e.target.value);
+        if(e.target.name === 'msg') setMsg(e.target.value);
+    }
+
+    const handleSubmitEmails = async () => {
         try {
-            const resp = axios.post("http://localhost:8000/notify", { emails: notifyEmail, msg: 'hey hii', subject: 'hello' });
-            console.log(resp);
-            
+            const resp = await axios.post("http://localhost:8000/notify", { senderEmail: window.localStorage.getItem('email') ,emails: notifyEmail, msg: msg, subject: subject });
+            // console.log(resp);
+            if( resp.status === 200) {
+                // toast logic
+            }
         } catch (error) {
             console.log(error);
         }
@@ -175,7 +184,7 @@ const GoLive = () => {
                                 <div className="chats">
                                     {
                                         liveChats.length > 0 && (
-                                            <div className="chatContainer" style={{ overflowY: 'auto'}}>
+                                            <div className="chatContainer" style={{ overflowY: 'auto' }}>
                                                 <pre className="preFormat">
                                                     {
                                                         liveChats.map((chat, i) => (
@@ -254,6 +263,31 @@ const GoLive = () => {
 
                     </div>
                 ))}
+                <div className="notify-email-input">
+                    <div className="sn1">
+                        <label htmlFor="email">Subject</label>
+                        <input
+                            className='input'
+                            type="text"
+                            name='subject'
+                            placeholder={`email`}
+                            onChange={(e) => handleMsgSubChange(e)}
+                        />
+
+                    </div>
+                    <div className="sn1">
+                        <label htmlFor="email">Message</label>
+                        <input
+                            className='input'
+                            type="text"
+                            name='msg'
+                            placeholder={`email`}
+                            onChange={(e) => handleMsgSubChange(e)}
+                        />
+
+                    </div>
+
+                </div>
                 <button className='button button-primary' onClick={handleAddEmail}>
                     + Add Email
                 </button>

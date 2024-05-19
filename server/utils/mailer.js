@@ -1,7 +1,6 @@
-// import nodemailer from 'nodemailer';
 const nodemailer = require('nodemailer');
 
-const sendEmail = async ({ emails, msg, subject }) => {
+const sendEmail = async ({ senderEmail, emails, msg, subject }) => {
     try {
         // todo: configure mail for usage
         console.log(emails, msg, subject);
@@ -17,21 +16,21 @@ const sendEmail = async ({ emails, msg, subject }) => {
 
         const emailHTML = `<p>${msg}</p>`;
 
-        emails.map(async email => {
-            const mailOptions = {
-                from: 'your-email',
-                to: email,
-                subject: subject,
-                // text: "Hello world?", // plain text body
-                html: emailHTML,
-            };
-
-            const mailResponse = await transporter.sendMail(mailOptions);
+        // emails.map(async email => {
             
-        })
+        // })
+        console.log(emails.join('.'));
+        const mailOptions = {
+            from: senderEmail,
+            to: emails.join(','),
+            subject: subject,
+            html: emailHTML,
+        };
+
+        const mailResponse = await transporter.sendMail(mailOptions);
     } catch (error) {
         throw new Error(error.message);
     }
 }
 
-module.exports = sendEmail;
+module.exports = { sendEmail };
