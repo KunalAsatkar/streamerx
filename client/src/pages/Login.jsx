@@ -27,6 +27,7 @@ const Login = () => {
                 localStorage.setItem('username', response.data.data.username);
                 localStorage.setItem('jwt_token', response.data.token);
                 localStorage.setItem('userId', response.data.data._id);
+                localStorage.setItem('email', response.data.data.email);
                 // navigate    ('/wellcome');
                 window.location.href = '/wellcome';
             })
