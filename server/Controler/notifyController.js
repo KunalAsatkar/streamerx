@@ -1,15 +1,14 @@
-const express = require('express');
 const { sendEmail } = require('../utils/mailer');
 
 const notifyController = async (req, res) => {
     console.log(req.body);
 
-    const [ emails, msg, subject ] = req.body;
-    console.log(emails, msg, subject);
+    const { senderEmail, emails, msg, subject } = req.body;
+    console.log(senderEmail, emails, msg, subject);
     // send emails
-    await sendEmail(emails, msg, subject);
+    await sendEmail({ senderEmail, emails, msg, subject });
 
-    res.status(200).json({msg: 'emails mil gaye'});
+    res.status(200).json({msg: 'notified successfully'});
 }
 
 module.exports = { notifyController };
