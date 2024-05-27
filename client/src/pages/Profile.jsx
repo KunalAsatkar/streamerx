@@ -14,16 +14,22 @@ const Profile = (props) => {
         })
             .then((response) => {
                 console.log("logged out");
+                localStorage.removeItem('username');
+                localStorage.removeItem('email');
                 localStorage.removeItem('jwt_token');
-                props.onLogout();
-                navigate('/');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('fname');
+                localStorage.removeItem('token_expiry');
+                // props.onLogout();
+                // navigate('/');
+                window.location.href = '/';
             })
             .catch((err) => {
                 console.log(err.message);
             })
     }
     const username = localStorage.getItem("username");
-    console.log(username);
+    // console.log(username);
     return (
         <div id="user-profile" className="user-profile-card">
             <div className="popup-menu">

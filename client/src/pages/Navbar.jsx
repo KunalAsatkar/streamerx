@@ -16,37 +16,24 @@ const Navbar = () => {
         // console.log(`showProfile`);
         setShowProfile(!showProfile);
     }
-    const checkLoggedIn = async () => {
-        const token = localStorage.getItem("jwt_token");
-        console.log(token);
-        const result = await axios.get('http://localhost:8000/auth/user', {
-            headers:
-            {
-                "Content-Type": "application/json",
-                "Authorization": token
-            }
-        })
-            .then((response) => {
-                console.log(response);
-                setLoggedIn(true);
-                return response.data.status
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoggedIn(false);
-                return false;
-            });
-        console.log(result, "Navbar");
-        // setLoggedIn(result);
-        return result;
-    };
+    
     useEffect(() => {
-        const check = async () => {
-            let result = await checkLoggedIn()
-            setLoggedIn(result);
-            // console.log(loggedIn);
-        }
-        check();
+        const checkLoggedIn = async () => {
+            const token = localStorage.getItem("jwt_token");
+            // console.log(token);
+            const result = await axios.get('http://localhost:8000/auth/user', {
+                headers:
+                {
+                    "Content-Type": "application/json",
+                    "Authorization": token
+                }
+            })
+
+            const data = result.data.status;
+            // console.log('data: ', data);
+            setLoggedIn(data);
+        };
+        checkLoggedIn();
     }, []);
     // useEffect(() => {
     //     const check = async () => {
@@ -80,8 +67,7 @@ const Navbar = () => {
                         <button className="user-icon-button" onClick={handleClick} >
                             <img className="profile-image" src={profileImage} alt="" />
                         </button>
-                        {showProfile && (<Profile
-                            onLogout={checkLoggedIn} />)}
+                        {showProfile && (<Profile />)}
                     </div>)}
 
                     {/* <div className='hamburger-menu'>

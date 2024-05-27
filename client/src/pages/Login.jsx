@@ -28,7 +28,8 @@ const Login = () => {
                 localStorage.setItem('jwt_token', response.data.token);
                 localStorage.setItem('userId', response.data.data._id);
                 localStorage.setItem('email', response.data.data.email);
-                // navigate    ('/wellcome');
+                localStorage.setItem('token_expiry', response.data.token_expiry);
+                // navigate    ('/wellcome'); // this dosent reload the page which caused not to reload the navbar component which creats some probs in navbar
                 window.location.href = '/wellcome';
             })
             .catch(function (err) {

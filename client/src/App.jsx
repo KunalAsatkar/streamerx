@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       {
         path: "/",
         index: true,
-        element: <Login />,
+        element: window.localStorage.getItem('jwt_token') ? <Home /> : <Login />,
       },
       {
         path: '/wellcome',
@@ -46,6 +46,23 @@ const router = createBrowserRouter([
 function App() {
   // const localstorage = window.localStorage();
   const [userId, setUserId] = useState(localStorage.getItem('userId'));
+
+  const token_expiry = new Date(localStorage.getItem('token_expiry'));
+  const currentTime = new Date();
+  if(currentTime >= token_expiry) {
+    localStorage.removeItem('username');
+    localStorage.removeItem('email');
+    localStorage.removeItem('jwt_token');
+    localStorage.removeItem('userId');
+    localStorage.removeItem('fname');
+    localStorage.removeItem('token_expiry');
+  }
+
+  // username	rutujp78	
+  // email	panbuderutuj6@gcoea.ac.in	
+  // jwt_token	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NDIwNTA1NjAyM2UzY2I4ZmYxMWZiMSIsImVtYWlsIjoicGFuYnVkZXJ1dHVqNkBnY29lYS5hYy5pbiIsImlhdCI6MTcxNjExNjgyMiwiZXhwIjoxNzE2MjAzMjIyfQ.4m7ZC0_A2rWhg_qZWuprDjsFeVXr6XQ-uobRam48Tgg	
+  // userId	664205056023e3cb8ff11fb1	
+  // fname	Rutuj
 
 
   return (
