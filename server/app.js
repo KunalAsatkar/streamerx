@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const session = require('express-session');
 require('./utils/passport.js');
+require('./utils/instaPassport.js');
 
 const app = express();
 
@@ -64,14 +65,28 @@ app.use('/livechatid', getLiveChatId);
 const { getLiveChats } = require('./Controler/getLiveChats.js');
 app.use('/getlivechats', getLiveChats);
 
+// insta routes
+const instaRedirectUri = 'http://localhost:8000/auth/instagram/callback'
+const instaScope = 'public_profile,instagram_graph_user_profile,instagram_graph_user_media';
+// const instaPassport = require('')
+app.get('/auth/instagram', passport.authenticate('instagram'));
+app.get('/auth/insgtagram/callback', passport.authenticate('instagram',
+    {
+        failureRedirect: 'http://localhost:5173/platform',
+        successRedirect: 'http://localhost:5173/platform'
+
+    }
+))
+const { instaAccessTokenController } = require('./Controler/instaAccessTokenController.js');
+app.get('/insta_accesstoken', instaAccessTokenController);
 
 app.get('/', (req, res) => {
     // console.log(req);
     res.status(200).json({
         status: true,
         data: {}
-    })
-})
+    });
+});
 
 const connectDB = async () => {
     try {
@@ -92,4 +107,4 @@ connectDB();
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
     console.log("server is running on ", PORT);
-})
+});

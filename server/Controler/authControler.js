@@ -45,22 +45,25 @@ const loginControler = async (req, res, next) => {
             })
         }
 
-
         const token = userInfo.jwtToken();
         userInfo.password = undefined;
         const cookiesOption = {
             maxAge: 24 * 60 * 60 * 1000,
             httpOnly: true
         }
+
+        const expiryTime = new Date();
+        expiryTime.setHours(expiryTime.getHours() + 23);
+        expiryTime.setMinutes(expiryTime.getMinutes() + 59);
+
         res.cookie("token", token, cookiesOption);
         // console.log(userInfo);
         return res.status(200).json({
             status: true,
             data: userInfo,
-            token: token
+            token: token,
+            token_expiry: expiryTime,
         })
-
-
     }
     catch (e) {
         return res.status(400).json({
@@ -70,7 +73,7 @@ const loginControler = async (req, res, next) => {
     }
 }
 
-const getUser = async (req, res, next) => {
+const getUser = async (req, res) => {
     const userId = req.user.id;
     try {
         const user = await userModel.findById(userId);

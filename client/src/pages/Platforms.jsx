@@ -15,9 +15,16 @@ export const Platforms = () => {
         url.searchParams.append('scope', 'https://www.googleapis.com/auth/youtube.force-ssl');
         window.open('http://localhost:8000/auth/google/callback', '_self');
         window.location.href = url.toString();
-        console.log(userId);
+        // console.log(userId);
         
         isConnectedYt(true);
+    }
+
+    const connectWithInsta = async () => {
+        const url = new URL('http://localhost:8000/auth/instagram');
+        window.open('http://localhost:8000/auth/instagram/callback', '_self');
+        window.location.href = url.toString();
+        isConnectedInsta(true);
     }
 
     useEffect(() => {
@@ -54,7 +61,7 @@ export const Platforms = () => {
         <div className="insta">
             <p className='insta-title'>Instagram</p>
             <div className="connected-detail">
-                <div className="isConnected">{isConnectedInsta ? "Connected" : <button>Connect</button>}</div>
+                <div className="isConnected">{isConnectedInsta ? "Connected" : <button onClick={connectWithInsta}>Connect</button>}</div>
                 <div className="isConnected-insta"></div>
             </div>
         </div>
