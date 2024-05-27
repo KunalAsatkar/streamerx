@@ -22,7 +22,7 @@ const GoLive = () => {
     const [mediaStream, setMediaStream] = useState(null);
     const [mediaRcd, setMediaRcd] = useState(null);
     const [socket, setSocket] = useState(null);
-    const [ytAccessToken, setYtAccessToken] = useState(null);
+    // const [ytAccessToken, setYtAccessToken] = useState(null);
     const [liveChatId, setLiveChatId] = useState('');
     const [notifyEmail, setNotifyEmail] = useState([]);
     const [intervVl, setInterVl] = useState();
@@ -30,10 +30,30 @@ const GoLive = () => {
     const [liveChats, setLiveChats] = useState([]);
     const [subject, setSubject] = useState('');
     const [msg, setMsg] = useState('');
+    const [user, setUser] = useState(null);
 
     const chatContianerRef = useRef(null);
 
     useEffect(() => {
+        const userId = window.localStorage.getItem('userId');
+        const token = window.localStorage.getItem('jwt_token');
+        // let user;
+        const getUser = async () => {
+            try {
+                const resp = await axios.get('http://localhost:8000/auth/user', {
+                    headers: {
+                        Authorization: token,
+                    }
+                });
+
+                setUser(user.data.data);
+                // user = resp.data.data;
+                console.log(user);
+            } catch (error) {
+                console.log('Error in getting user', error);
+            }
+        };
+
         const getMedia = async () => {
             try {
                 const media = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
@@ -44,14 +64,8 @@ const GoLive = () => {
             }
         }
 
-        const getYtAccessToken = async () => {
-            const resp = await axios.get('http://localhost:8000/getaccesstoken', { params: { userId: window.localStorage.getItem('userId') } });
-            setYtAccessToken(resp.data.accessToken);
-            console.log(resp.data);
-        }
-
+        getUser();
         getMedia();
-        getYtAccessToken();
 
         return () => {
             if (mediaStream) {
@@ -98,6 +112,11 @@ const GoLive = () => {
     // implementing this...
     let nextPageTokenForChat; // jugad since nextPageToken useState var is not updating
     const getLiveChats = async () => {
+        // get access token
+        const response = await axios.get('http://localhost:8000/getaccesstoken', { params: { userId: window.localStorage.getItem('userId') } });
+        const ytAccessToken = response.data.accessToken;
+        console.log('YTaccessToken: ', ytAccessToken);
+
         // get livechatid
         const resp = await axios.get('http://localhost:8000/livechatid', { params: { accessToken: ytAccessToken } });
         const LiveChatId = resp.data.liveChatId;
