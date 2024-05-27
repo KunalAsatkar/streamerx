@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect } from "react"
 import { io } from 'socket.io-client'
 import './golive.css';
+import { FaYoutube } from "react-icons/fa";
 import axios from "axios";
+import { FaInstagramSquare } from "react-icons/fa";
 
 const GoLive = () => {
 
@@ -151,15 +153,15 @@ const GoLive = () => {
     };
 
     const handleMsgSubChange = (e) => {
-        if(e.target.name === 'subject') setSubject(e.target.value);
-        if(e.target.name === 'msg') setMsg(e.target.value);
+        if (e.target.name === 'subject') setSubject(e.target.value);
+        if (e.target.name === 'msg') setMsg(e.target.value);
     }
 
     const handleSubmitEmails = async () => {
         try {
-            const resp = await axios.post("http://localhost:8000/notify", { senderEmail: window.localStorage.getItem('email') ,emails: notifyEmail, msg: msg, subject: subject });
+            const resp = await axios.post("http://localhost:8000/notify", { senderEmail: window.localStorage.getItem('email'), emails: notifyEmail, msg: msg, subject: subject });
             // console.log(resp);
-            if( resp.status === 200) {
+            if (resp.status === 200) {
                 // toast logic
             }
         } catch (error) {
@@ -181,32 +183,28 @@ const GoLive = () => {
                             <div className="chats-top">
                                 <h5>Top Chats</h5>
                                 <hr />
-                                <div className="chats">
-                                    {
-                                        liveChats.length > 0 && (
-                                            <div className="chatContainer" style={{ overflowY: 'auto' }}>
-                                                <pre className="preFormat">
-                                                    {
-                                                        liveChats.map((chat, i) => (
-                                                            <p
-                                                                ref={liveChats.length - 1 === i ? chatContianerRef : undefined}
-                                                                key={i}
-                                                            >
-                                                                <span>{chat.platform} </span>
-                                                                <span>{chat.platform === 'youtube' ? chat.authorDetails.displayName : ''} </span>
-                                                                <span>{chat.platform === 'youtube' ? chat.snippet.textMessageDetails.messageText : ''}</span>
-                                                            </p>
-                                                        ))
-                                                    }
-                                                </pre>
-                                            </div>
-                                        )
-                                    }
-                                    <div className="msg"></div>
-                                </div>
                             </div>
-                            <div className="chats-container">
-
+                            <div className="chats">
+                                {
+                                    liveChats.length > 0 && (
+                                        <div className="chatContainer">
+                                            <pre className="preFormat">
+                                                {
+                                                    liveChats.map((chat, i) => (
+                                                        <p
+                                                            ref={liveChats.length - 1 === i ? chatContianerRef : undefined}
+                                                            key={i}
+                                                        >
+                                                            <span>{chat.platform === 'youtube' ? <FaYoutube size={15} /> : <FaInstagramSquare size={15} />} </span>
+                                                            <span>{chat.platform === 'youtube' ? chat.authorDetails.displayName + ': ' : ''} </span>
+                                                            <span>{chat.platform === 'youtube' ? chat.snippet.textMessageDetails.messageText : ''}</span>
+                                                        </p>
+                                                    ))
+                                                }
+                                            </pre>
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
