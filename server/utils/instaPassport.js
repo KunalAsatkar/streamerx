@@ -1,5 +1,5 @@
 const passport = require('passport');
-const InstagramStrategy = require('passport-instagram').Strategy;
+const InstagramStrategy = require('passport-instagram');
 const dotenv = require('dotenv')
 
 dotenv.config();
@@ -9,7 +9,7 @@ const User = require('../Models/userModel');
 const instaRedirectUri = 'http://localhost:8000/auth/instagram/callback';
 const instaScope = 'public_profile,instagram_graph_user_profile,instagram_graph_user_media';
 
-passport.use(new InstagramStrategy({
+passport.use('instagram' ,new InstagramStrategy({
     clientID: process.env.INSTA_APP_ID,
     clientSecret: process.env.INSTA_APP_SEC,
     callbackURL: instaRedirectUri,

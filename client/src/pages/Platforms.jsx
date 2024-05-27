@@ -27,6 +27,16 @@ export const Platforms = () => {
         isConnectedInsta(true);
     }
 
+    const disconnectWithYT = async () => {
+        try {
+            const resp = await axios.post('http://localhost:8000/auth/google/disconnect', { userId });
+            console.log(resp);
+            if(resp.status === 200) isConnectedYt(false);
+        } catch (error) {
+            console.log('Error in disconnecting youtube');
+        }
+    }
+
     useEffect(() => {
         async function getUser() {
             try {
@@ -54,17 +64,22 @@ export const Platforms = () => {
         <div className="yt">
             <p className='yt-title'>Youtube</p>
             <div className="connected-detail">
-                <div className="isconnected">{isConnectedYt ? "Connected" : <button onClick={connectWithYT}>Connect</button>}</div>
-                <div className="isConnected-yt"></div>
+                {
+                    isConnectedYt ?
+                        <div className="isconnected"><button onClick={disconnectWithYT}>Disconnect</button></div>
+                    :
+                    <div className="isconnected"><button onClick={connectWithYT}>Connect</button></div>
+                }
+                {/* <div className="isConnected-yt"></div> */}
             </div>
         </div>
-        <div className="insta">
+        {/* <div className="insta">
             <p className='insta-title'>Instagram</p>
             <div className="connected-detail">
                 <div className="isConnected">{isConnectedInsta ? "Connected" : <button onClick={connectWithInsta}>Connect</button>}</div>
                 <div className="isConnected-insta"></div>
             </div>
-        </div>
+        </div> */}
         
     </div>
   )

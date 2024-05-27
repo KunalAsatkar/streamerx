@@ -84,7 +84,7 @@ io.on('connection', socket => {
     const ffmpegProcessYoutube = spawn('ffmpeg', optionsYoutube);
 
     ffmpegProcessYoutube.stdout.on('data', (data) => {
-        console.log(`ffmpeg stdout: ${data}`);
+        // console.log(`ffmpeg stdout: ${data}`);
     })
 
     ffmpegProcessYoutube.stderr.on('data', (data) => {
@@ -92,7 +92,7 @@ io.on('connection', socket => {
     });
 
     ffmpegProcessYoutube.on('close', (code) => {
-        console.log(`ffmpeg process exited with code ${code}`);
+        // console.log(`ffmpeg process exited with code ${code}`);
     });
 
     socket.on('binarystream', stream => {

@@ -28,7 +28,7 @@ const registerControler = async (req, res, next) => {
 const loginControler = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        console.log(email, password);
+        // console.log(email, password);
         if (!email || !password) {
             res.status(400).json({
                 status: false,
