@@ -12,6 +12,7 @@ import axios from 'axios';
 const Navbar = () => {
     const [showProfile, setShowProfile] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [user, setUser] = useState(null);
     const handleClick = () => {
         // console.log(`showProfile`);
         setShowProfile(!showProfile);
@@ -29,9 +30,11 @@ const Navbar = () => {
                 }
             })
 
+            const user = result.data.data;
             const data = result.data.status;
             // console.log('data: ', data);
             setLoggedIn(data);
+            setUser(user);
         };
         checkLoggedIn();
     }, []);
@@ -57,6 +60,9 @@ const Navbar = () => {
                     <div>
                         <Link className="head link" to={loggedIn ? `/videouploads` : `/`}>Videouploads</Link>
                     </div>
+                    <div>
+                        <Link className="head link" to={loggedIn ? `/platform` : `/`}>Platform</Link>
+                    </div>
                     {/* <div>
                         <Link className="head link" to="/contact">Contact</Link>
                     </div> */}
@@ -67,7 +73,7 @@ const Navbar = () => {
                         <button className="user-icon-button" onClick={handleClick} >
                             <img className="profile-image" src={profileImage} alt="" />
                         </button>
-                        {showProfile && (<Profile />)}
+                        {showProfile && (<Profile user={user}/>)}
                     </div>)}
 
                     {/* <div className='hamburger-menu'>

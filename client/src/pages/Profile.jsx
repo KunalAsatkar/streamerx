@@ -1,7 +1,8 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import { useNavigate, Link } from "react-router-dom";
 
-const Profile = (props) => {
+const Profile = ({ user }) => {
     const navigate = useNavigate();
     const handleLogOut = async () => {
         try {
@@ -13,7 +14,7 @@ const Profile = (props) => {
             localStorage.removeItem('userId');
             localStorage.removeItem('fname');
             localStorage.removeItem('token_expiry');
-            
+
             const resp = await axios.get('http://localhost:8000/auth/logout', {
                 headers: {
                     "Authorization": token,
@@ -27,18 +28,22 @@ const Profile = (props) => {
         }
     }
 
-return (
-    <div id="user-profile" className="user-profile-card">
-        <div className="popup-menu">
-            <div className="profile-card">
-                <p>Welcome</p>
-                <Link to={`/dashboard/${username}`} className='link' >{username}</Link>
-                <Link to={`/${username}/createEvent`} className='link'>CreateEvent </Link>
-                <Link onClick={handleLogOut} className="link" to="/">Log Out </Link>
+    return (
+        <div id="user-profile" className="user-profile-card">
+            <div className="popup-menu">
+                <div className="profile-card">
+                    <p>Welcome</p>
+                    <Link to={`/dashboard/${user.username}`} className='link' >{user.username}</Link>
+                    {/* <Link to={`/${user.username}/createEvent`} className='link'>CreateEvent </Link> */}
+                    <Link onClick={handleLogOut} className="link" to="/">Log Out </Link>
+                </div>
             </div>
         </div>
-    </div>
-)
+    )
 }
+
+Profile.propTypes = {
+    user: PropTypes.any.isRequired,
+};
 
 export default Profile;
