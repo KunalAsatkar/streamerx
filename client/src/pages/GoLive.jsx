@@ -88,7 +88,7 @@ const GoLive = () => {
         setMediaRcd(mediaRecorder);
 
         mediaRecorder.ondataavailable = (e) => {
-            console.log('Binary Stream Available:', e.data);
+            // console.log('Binary Stream Available:', e.data);
             newSocket.emit('binarystream', e.data);
         }
 

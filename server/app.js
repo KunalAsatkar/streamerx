@@ -43,6 +43,8 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     failureRedirect: 'http://localhost:5173/platform'
 }
 ));
+const { disconnectYt } = require('./Controler/disconnectYt.js')
+app.post('/auth/google/disconnect', disconnectYt);
 
 passport.serializeUser((user, done) => {
     done(null, user);
@@ -66,11 +68,8 @@ const { getLiveChats } = require('./Controler/getLiveChats.js');
 app.use('/getlivechats', getLiveChats);
 
 // insta routes
-const instaRedirectUri = 'http://localhost:8000/auth/instagram/callback'
-const instaScope = 'public_profile,instagram_graph_user_profile,instagram_graph_user_media';
-// const instaPassport = require('')
 app.get('/auth/instagram', passport.authenticate('instagram'));
-app.get('/auth/insgtagram/callback', passport.authenticate('instagram',
+app.get('/auth/instagram/callback', passport.authenticate('instagram',
     {
         failureRedirect: 'http://localhost:5173/platform',
         successRedirect: 'http://localhost:5173/platform'
