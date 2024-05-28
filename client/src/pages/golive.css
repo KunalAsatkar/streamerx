@@ -68,11 +68,25 @@
     width: 35%;
     margin-left: 10px;
     height: 500px;
+    overflow-y: auto;
+    overflow-x: hidden;
     /* background-color: gray; */
 }
 
 .chats-top {
     padding: 5px;
+}
+
+.chatContainer{
+    padding: 5px;
+    height: 100%;
+    width: 100%;
+}
+
+.preFormat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
 }
 
 /* .label{

@@ -1,7 +1,9 @@
 import { useRef, useState, useEffect } from "react"
 import { io } from 'socket.io-client'
 import './golive.css';
+import { FaYoutube } from "react-icons/fa";
 import axios from "axios";
+import { FaInstagramSquare } from "react-icons/fa";
 
 const GoLive = () => {
 
@@ -20,7 +22,7 @@ const GoLive = () => {
     const [mediaStream, setMediaStream] = useState(null);
     const [mediaRcd, setMediaRcd] = useState(null);
     const [socket, setSocket] = useState(null);
-    const [ytAccessToken, setYtAccessToken] = useState(null);
+    // const [ytAccessToken, setYtAccessToken] = useState(null);
     const [liveChatId, setLiveChatId] = useState('');
     const [notifyEmail, setNotifyEmail] = useState([]);
     const [intervVl, setInterVl] = useState();
@@ -28,10 +30,30 @@ const GoLive = () => {
     const [liveChats, setLiveChats] = useState([]);
     const [subject, setSubject] = useState('');
     const [msg, setMsg] = useState('');
+    const [user, setUser] = useState(null);
 
     const chatContianerRef = useRef(null);
 
     useEffect(() => {
+        const userId = window.localStorage.getItem('userId');
+        const token = window.localStorage.getItem('jwt_token');
+        // let user;
+        const getUser = async () => {
+            try {
+                const resp = await axios.get('http://localhost:8000/auth/user', {
+                    headers: {
+                        Authorization: token,
+                    }
+                });
+
+                setUser(user.data.data);
+                // user = resp.data.data;
+                console.log(user);
+            } catch (error) {
+                console.log('Error in getting user', error);
+            }
+        };
+
         const getMedia = async () => {
             try {
                 const media = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
@@ -42,14 +64,8 @@ const GoLive = () => {
             }
         }
 
-        const getYtAccessToken = async () => {
-            const resp = await axios.get('http://localhost:8000/getaccesstoken', { params: { userId: window.localStorage.getItem('userId') } });
-            setYtAccessToken(resp.data.accessToken);
-            console.log(resp.data);
-        }
-
+        getUser();
         getMedia();
-        getYtAccessToken();
 
         return () => {
             if (mediaStream) {
@@ -86,7 +102,7 @@ const GoLive = () => {
         setMediaRcd(mediaRecorder);
 
         mediaRecorder.ondataavailable = (e) => {
-            console.log('Binary Stream Available:', e.data);
+            // console.log('Binary Stream Available:', e.data);
             newSocket.emit('binarystream', e.data);
         }
 
@@ -96,6 +112,11 @@ const GoLive = () => {
     // implementing this...
     let nextPageTokenForChat; // jugad since nextPageToken useState var is not updating
     const getLiveChats = async () => {
+        // get access token
+        const response = await axios.get('http://localhost:8000/getaccesstoken', { params: { userId: window.localStorage.getItem('userId') } });
+        const ytAccessToken = response.data.accessToken;
+        console.log('YTaccessToken: ', ytAccessToken);
+
         // get livechatid
         const resp = await axios.get('http://localhost:8000/livechatid', { params: { accessToken: ytAccessToken } });
         const LiveChatId = resp.data.liveChatId;
@@ -151,15 +172,15 @@ const GoLive = () => {
     };
 
     const handleMsgSubChange = (e) => {
-        if(e.target.name === 'subject') setSubject(e.target.value);
-        if(e.target.name === 'msg') setMsg(e.target.value);
+        if (e.target.name === 'subject') setSubject(e.target.value);
+        if (e.target.name === 'msg') setMsg(e.target.value);
     }
 
     const handleSubmitEmails = async () => {
         try {
-            const resp = await axios.post("http://localhost:8000/notify", { senderEmail: window.localStorage.getItem('email') ,emails: notifyEmail, msg: msg, subject: subject });
+            const resp = await axios.post("http://localhost:8000/notify", { senderEmail: window.localStorage.getItem('email'), emails: notifyEmail, msg: msg, subject: subject });
             // console.log(resp);
-            if( resp.status === 200) {
+            if (resp.status === 200) {
                 // toast logic
             }
         } catch (error) {
@@ -181,32 +202,28 @@ const GoLive = () => {
                             <div className="chats-top">
                                 <h5>Top Chats</h5>
                                 <hr />
-                                <div className="chats">
-                                    {
-                                        liveChats.length > 0 && (
-                                            <div className="chatContainer" style={{ overflowY: 'auto' }}>
-                                                <pre className="preFormat">
-                                                    {
-                                                        liveChats.map((chat, i) => (
-                                                            <p
-                                                                ref={liveChats.length - 1 === i ? chatContianerRef : undefined}
-                                                                key={i}
-                                                            >
-                                                                <span>{chat.platform} </span>
-                                                                <span>{chat.platform === 'youtube' ? chat.authorDetails.displayName : ''} </span>
-                                                                <span>{chat.platform === 'youtube' ? chat.snippet.textMessageDetails.messageText : ''}</span>
-                                                            </p>
-                                                        ))
-                                                    }
-                                                </pre>
-                                            </div>
-                                        )
-                                    }
-                                    <div className="msg"></div>
-                                </div>
                             </div>
-                            <div className="chats-container">
-
+                            <div className="chats">
+                                {
+                                    liveChats.length > 0 && (
+                                        <div className="chatContainer">
+                                            <pre className="preFormat">
+                                                {
+                                                    liveChats.map((chat, i) => (
+                                                        <p
+                                                            ref={liveChats.length - 1 === i ? chatContianerRef : undefined}
+                                                            key={i}
+                                                        >
+                                                            <span>{chat.platform === 'youtube' ? <FaYoutube size={15} /> : <FaInstagramSquare size={15} />} </span>
+                                                            <span>{chat.platform === 'youtube' ? chat.authorDetails.displayName + ': ' : ''} </span>
+                                                            <span>{chat.platform === 'youtube' ? chat.snippet.textMessageDetails.messageText : ''}</span>
+                                                        </p>
+                                                    ))
+                                                }
+                                            </pre>
+                                        </div>
+                                    )
+                                }
                             </div>
                         </div>
                     </div>
