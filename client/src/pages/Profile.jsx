@@ -29,8 +29,9 @@ const Profile = (props) => {
             <div className="popup-menu">
                 <div className="profile-card">
                     <p>Welcome</p>
-                    <Link to={`/dashboard/${username}`} className='link' >{username}</Link>
-                    <Link to={`/${username}/createEvent`} className='link'>CreateEvent </Link>
+                    {/* <Link to={`/dashboard/${username}`} className='link' >{username}</Link> */}
+                    <p>{username}</p>
+                    {/* <Link to={`/${username}/createEvent`} className='link'>CreateEvent </Link> */}
                     <Link onClick={handleLogOut} className="link" to="/">Log Out </Link>
                 </div>
             </div>
