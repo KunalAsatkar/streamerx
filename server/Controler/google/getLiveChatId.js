@@ -15,7 +15,6 @@ const getLiveChatId = async (req, res) => {
     const liveChatId = latestChat.snippet.liveChatId;
 
     // console.log('latestChats: ', latestChat);
-
     res.status(200).json({ liveChatId: liveChatId });
 }
 

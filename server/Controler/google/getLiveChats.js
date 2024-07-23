@@ -13,17 +13,6 @@ const getLiveChats = async (req, res) => {
         });
     
         const { data } = resp;
-        
-        // if(req.query.nextPageToken) {
-        //     console.log('second: ', data);
-        //     const newMessages = data.items;
-        //     console.log('second: ', newMessages);
-        // }
-        // else {
-        //     console.log('first:', data);
-        //     const newMessages = data.items;
-        //     console.log('first: ', newMessages);
-        // }
     
         res.status(200).json({ data: data });
     } catch (error) {

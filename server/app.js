@@ -1,83 +1,20 @@
 const express = require('express');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const passport = require('passport');
-const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const session = require('express-session');
-require('./utils/passport.js');
-require('./utils/instaPassport.js');
-
 const app = express();
+const cookieParser = require('cookie-parser');
+const configRoutes = require('./Routes/configRoutes.js');
+const { passport, session } = require('./middleware/index.js');
+const { connectDB, corsConfig } = require('./utils/index.js');
 
-dotenv.config();
 app.use(express.json());
+app.use(corsConfig);
+// for OAuth (google/instagram)
 app.use(cookieParser());
-app.use(cors({
-    origin: "http://localhost:5173",
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
-}));
-
-// y ? generated unique id(session-id) when loggin using google auth
-app.use(session({
-    secret: process.env.EXPRESS_SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-}))
-
+app.use(session);
 app.use(passport.initialize()); // similar to npm init
 app.use(passport.session());
 
-const scope = [
-    'email',
-    'profile',
-    'https://www.googleapis.com/auth/youtube.readonly',
-    'https://www.googleapis.com/auth/youtube',
-    'https://www.googleapis.com/auth/youtube.force-ssl'
-];
-
-app.get('/auth/google', passport.authenticate('google', { scope: scope, accessType: 'offline' }))
-app.get('/auth/google/callback', passport.authenticate('google', {
-    successRedirect: 'http://localhost:5173/platform',
-    failureRedirect: 'http://localhost:5173/platform'
-}
-));
-const { disconnectYt } = require('./Controler/disconnectYt.js')
-app.post('/auth/google/disconnect', disconnectYt);
-
-passport.serializeUser((user, done) => {
-    done(null, user);
-})
-passport.deserializeUser((user, done) => {
-    done(null, user);
-})
-
-const authRoutes = require('./Routes/authRoutes');
-// const awarenessRoutes = require('./Routes/awarenessRoutes');
-app.use('/auth', authRoutes);
-// app.use('/awareness', awarenessRoutes);
-const notifyRoutes = require('./Routes/notifyRoutes.js');
-app.use('/notify', notifyRoutes);
-
-const googleAuthTokenRoute = require('./Routes/googleAuthTokens.js');
-app.use('/getaccesstoken', googleAuthTokenRoute);
-const { getLiveChatId } = require('./Controler/getLiveChatId.js')
-app.use('/livechatid', getLiveChatId);
-const { getLiveChats } = require('./Controler/getLiveChats.js');
-app.use('/getlivechats', getLiveChats);
-
-// insta routes
-app.get('/auth/instagram', passport.authenticate('instagram'));
-app.get('/auth/instagram/callback', passport.authenticate('instagram',
-    {
-        failureRedirect: 'http://localhost:5173/platform',
-        successRedirect: 'http://localhost:5173/platform'
-
-    }
-))
-const { instaAccessTokenController } = require('./Controler/instaAccessTokenController.js');
-app.get('/insta_accesstoken', instaAccessTokenController);
+// main routes
+configRoutes(app);
 
 app.get('/', (req, res) => {
     // console.log(req);
@@ -86,16 +23,6 @@ app.get('/', (req, res) => {
         data: {}
     });
 });
-
-const connectDB = async () => {
-    try {
-        await mongoose.connect(process.env.MONGODB_URL);
-        console.log("connected to db..")
-    }
-    catch (e) {
-        console.log(e);
-    }
-}
 
 app.use((req, res) => {
     res.status(404).send("Page not found");

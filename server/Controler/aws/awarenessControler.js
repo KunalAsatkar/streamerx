@@ -1,6 +1,6 @@
 const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
-const { streamModel } = require('../Models/streamModel');
+const { streamModel } = require('../../Models/streamModel');
 
 const uploadVideo = async (req, res, next) => {
 

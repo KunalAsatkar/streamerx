@@ -113,12 +113,12 @@ const GoLive = () => {
     let nextPageTokenForChat; // jugad since nextPageToken useState var is not updating
     const getLiveChats = async () => {
         // get access token
-        const response = await axios.get('http://localhost:8000/getaccesstoken', { params: { userId: window.localStorage.getItem('userId') } });
+        const response = await axios.get('http://localhost:8000/auth/google/accesstoken', { params: { userId: window.localStorage.getItem('userId') } });
         const ytAccessToken = response.data.accessToken;
         console.log('YTaccessToken: ', ytAccessToken);
 
         // get livechatid
-        const resp = await axios.get('http://localhost:8000/livechatid', { params: { accessToken: ytAccessToken } });
+        const resp = await axios.get('http://localhost:8000/livechat/google/livechatid', { params: { accessToken: ytAccessToken } });
         const LiveChatId = resp.data.liveChatId;
 
         setLiveChatId(LiveChatId);
@@ -128,7 +128,7 @@ const GoLive = () => {
             try {
                 console.log('nextPageTOken: ', nextPageToken)
                 // const liveChat = await  axios.get('http://localhost:8000/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageToken, accessToken: ytAccessToken } });
-                const liveChat = await axios.get('http://localhost:8000/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageTokenForChat, accessToken: ytAccessToken } });
+                const liveChat = await axios.get('http://localhost:8000/livechat/google/getlivechats', { params: { liveChatId: LiveChatId, nextPageToken: nextPageTokenForChat, accessToken: ytAccessToken } });
                 console.log('msg items array: ', liveChat.data.data.items);
                 const msges = liveChat.data.data.items;
                 const modifiedMsg = msges.map(msg => {
