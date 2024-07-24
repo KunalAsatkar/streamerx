@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-
     const [showlogin, setShowLogin] = useState(true);
     const navigate = useNavigate();
     const [data, setData] = useState({
@@ -14,16 +13,16 @@ const Login = () => {
         contactno: "",
         password: ""
     });
-    const [errorMessage, setErrorMessage] = useState(false)
+    const [errorMessage, setErrorMessage] = useState(false);
+
     const changeHandler = (e) => {
         setData({ ...data, [e.target.name]: e.target.value });
     }
+
     const loginHandler = async (e) => {
         e.preventDefault();
         axios.post('http://localhost:8000/auth/login', data)
             .then((response) => {
-                // console.log(response.data.token);
-                // console.log(response.data.data);
                 localStorage.setItem('username', response.data.data.username);
                 localStorage.setItem('jwt_token', response.data.token);
                 localStorage.setItem('userId', response.data.data._id);
@@ -42,7 +41,7 @@ const Login = () => {
         e.preventDefault();
         // console.log(data);
         axios.post('http://localhost:8000/auth/register', data)
-            .then((response) => {
+            .then(() => {
                 // console.log(response);
                 setShowLogin(!showlogin);
                 navigate('/')
@@ -69,7 +68,7 @@ const Login = () => {
                         <input value={data.password} onChange={changeHandler} type="password" name="password" id="password" placeholder="******" />
                         <button onClick={loginHandler} type="submit">Log In</button>
                     </form>
-                    <p>Don't have account <span onClick={() => { setShowLogin(false); }}>Signup</span> </p>
+                    <p>Don&apos;t have account <span onClick={() => { setShowLogin(false); }}>Signup</span> </p>
                     {errorMessage &&
                         (<p className="error-message">The entered credentials are incorrect</p>)
                     }

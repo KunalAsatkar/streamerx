@@ -39,4 +39,4 @@ const liveStream = (streamInfo) => {
     return ffmpegProcess;
 }
 
-module.exports = liveStream;
+export default liveStream;

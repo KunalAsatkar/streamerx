@@ -1,5 +1,5 @@
 import { Server } from 'socket.io';
-import liveStream from './utils/liveStream';
+import liveStream from './utils/liveStream.js';
 
 const socketServer = (httpServer) => {
     const io = new Server(httpServer, {
@@ -37,4 +37,4 @@ const socketServer = (httpServer) => {
     });
 }
 
-module.exports = socketServer;
+export default socketServer;

@@ -2,7 +2,7 @@ import express from 'express';
 import http from 'http';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import socketServer from './socketServer';
+import socketServer from './socketServer.js';
 
 const app = express();
 app.use(cors({ origin: '*' }));
