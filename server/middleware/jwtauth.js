@@ -29,4 +29,4 @@ const jwtAuth = (req, res, next) => {
     next();
 }
 
-module.exports = { jwtAuth };
+module.exports = jwtAuth;

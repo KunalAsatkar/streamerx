@@ -1,4 +1,4 @@
-const { sendEmail } = require('../utils/mailer');
+const { sendEmail } = require('../../utils/index');
 
 const notifyController = async (req, res) => {
     console.log(req.body);

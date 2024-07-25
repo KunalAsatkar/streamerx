@@ -33,4 +33,4 @@ const sendEmail = async ({ senderEmail, emails, msg, subject }) => {
     }
 }
 
-module.exports = { sendEmail };
+module.exports = sendEmail;

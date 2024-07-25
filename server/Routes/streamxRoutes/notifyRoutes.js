@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { notifyController } = require("../Controler/notifyController");
+const { notifyController } = require("../../Controler/streamx/notifyController");
 
 router.post('/', notifyController);
 
